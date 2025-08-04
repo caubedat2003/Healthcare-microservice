@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     g++ \
     build-essential \
     libpq-dev \
+    netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
@@ -19,8 +20,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
+# Copy script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+
 # Expose port
 EXPOSE 8000
 
 # Start the app
-CMD ["gunicorn", "patient_service.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "doctor_service.wsgi:application", "--bind", "0.0.0.0:8000"]

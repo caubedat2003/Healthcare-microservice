@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     g++ \
     build-essential \
     libpq-dev \
+    netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
     
 # Set work directory

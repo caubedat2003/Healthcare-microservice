@@ -1,0 +1,132 @@
+
+services:
+  patient_postgres:
+    image: postgres:14
+    container_name: patient_db
+    restart: always
+    volumes:
+      - patient_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432" # Port bên ngoài: 5433 (tránh đụng 5432 nếu bạn cài sẵn PostgreSQL local)
+    environment:
+      POSTGRES_DB: patient_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthcare_network
+
+  patient_service:
+    build:
+      context: ./patient
+    container_name: patient_service
+    command: gunicorn patient.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./patient:/app
+    ports:
+      - "8001:8000"
+    depends_on:
+      - patient_postgres
+    environment:
+      - DEBUG=1
+    networks:
+      - healthcare_network  
+
+  doctor_postgres:
+    image: postgres:14
+    container_name: doctor_db
+    restart: always
+    volumes:
+      - doctor_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: doctor_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthcare_network
+
+  doctor_service:
+    build:
+      context: ./doctor
+    container_name: doctor_service
+    command: gunicorn doctor.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./doctor:/app
+    ports:
+      - "8002:8000"
+    depends_on:
+      - doctor_postgres
+    environment:
+      - DEBUG=1
+    networks:
+      - healthcare_network  
+
+  appointment_postgres:
+    image: postgres:14
+    container_name: appointment_db
+    restart: always
+    volumes:
+      - appointment_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: appointment_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthcare_network
+
+  appointment_service:
+    build:
+      context: ./appointment
+    container_name: appointment_service
+    command: gunicorn appointment.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./appointment:/app
+    ports:
+      - "8003:8000"
+    depends_on:
+      - appointment_postgres
+    environment:
+      - DEBUG=1
+    networks:
+      - healthcare_network  
+
+  api-gateway:
+    image: nginx:latest
+    container_name: api-gateway
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - patient_service
+      - doctor_service
+      - appointment_service
+    networks:
+      - healthcare_network
+
+volumes:
+  patient_postgres_data:
+  doctor_postgres_data:
+  appointment_postgres_data:
+
+networks:
+  healthcare_network:
+    driver: bridge

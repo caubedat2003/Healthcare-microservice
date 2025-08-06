@@ -108,6 +108,22 @@ services:
     networks:
       - healthcare_network  
 
+  frontend:
+    build:
+      context: ./template
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./template:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_GATEWAY_URL=http://localhost:8080
+    restart: unless-stopped
+    networks:
+      - healthcare_network
+
   api-gateway:
     image: nginx:latest
     container_name: api-gateway
@@ -119,6 +135,7 @@ services:
       - patient_service
       - doctor_service
       - appointment_service
+      - frontend
     networks:
       - healthcare_network
 

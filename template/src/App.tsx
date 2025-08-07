@@ -1,20 +1,25 @@
+import { Routes, Route } from 'react-router-dom'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { Button } from 'antd'
 import './App.css'
+import UserLayout from './layouts/UserLayout'
+import Home from './pages/Home'
+import Doctors from './pages/Doctors'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Appointment from './pages/Appointment'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div className='bg-red-100 flex flex-col items-center justify-center'>
-        <h1>HIHI</h1>
-
-      </div>
-      <Button color='green' variant='solid'>Button</Button>
-    </>
+    <Routes>
+      <Route path='/' element={<UserLayout />}>
+        <Route index element={<Home />} />
+        <Route path="doctors" element={<Doctors />} />
+        <Route path="about" element={<About />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="appointment" element={<Appointment />} />
+      </Route>
+    </Routes>
   )
 }
 

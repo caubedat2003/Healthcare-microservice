@@ -15,6 +15,8 @@ import { MdChildCare } from 'react-icons/md';
 import { LiaDnaSolid } from 'react-icons/lia';
 import { GiBrain, GiHeartOrgan } from 'react-icons/gi';
 import { FaLocationDot } from 'react-icons/fa6';
+import { AiOutlineSchedule } from 'react-icons/ai';
+import Footer from '../components/Footer';
 
 const HeroSection = () => {
     return (
@@ -29,6 +31,11 @@ const HeroSection = () => {
                     <a className="p-6 bg-[#13c2c2] rounded-xl border-none text-white font-bold 
                         sm:text-xl md:text-3xl hover:bg-white hover:text-[#13c2c2] transition duration-300 ease-in-out"
                         href="#department"
+                        onClick={e => {
+                            e.preventDefault();
+                            const el = document.getElementById('department');
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }}
                     >
                         Tell Me More
                     </a>
@@ -140,8 +147,8 @@ const AboutSection = () => {
                                 Dedicated to providing top-quality healthcare services. We believe in a holistic approach to healthcare that focuses on treating the whole person, not just the illness or symptoms.
                             </p>
                             <div className='flex items-center gap-2 mt-5'>
-                                <Link className='!text-base'>Learn more about us </Link>
-                                <FaArrowRight className='text-xs text-blue-500' />
+                                <Link className='!text-base !text-[#13c2c2] hover:!text-[#0f9f9f]' href="/about">Learn more about us </Link>
+                                <FaArrowRight className='text-xs text-blue-500 !text-[#13c2c2] hover:!text-[#0f9f9f]' />
                             </div>
                         </div>
                     </div>
@@ -160,7 +167,7 @@ const ContactSection = () => {
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-10'>
                     <div className='flex flex-row items-center justify-center gap-5 p-6'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center">
+                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
                             <FiPhone className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -169,7 +176,7 @@ const ContactSection = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center justify-center gap-5 p-6'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center">
+                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
                             <LuAmbulance className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -178,7 +185,7 @@ const ContactSection = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center justify-center gap-5 p-6'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center">
+                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
                             <IoLocationOutline className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -194,6 +201,7 @@ const ContactSection = () => {
                             iconPosition="end"
                             className="!bg-gradient-to-r from-[#0f9f9f] to-[#1aeaea] border-none text-white
                                 !font-bold uppercase hover:opacity-60"
+                            onClick={() => window.location.href = '/contact'}
                         >
                             Contact us
                         </Button>
@@ -241,6 +249,18 @@ const DoctorSection = () => {
                 <div className='flex flex-col items-center justify-center pb-10'>
                     <h1 className='text-4xl font-bold uppercase mb-3'>Our Top Professionists</h1>
                     <p className='text-base text-gray-400'>Doctor with top skills and techniques in Northside Vietnam</p>
+                    <div className='flex flex-row items-center justify-center gap-5 p-6'>
+                        <Button
+                            type="primary"
+                            size="large"
+                            icon={<AiOutlineSchedule />}
+                            iconPosition="start"
+                            className="!bg-gradient-to-r from-[#0f9f9f] to-[#1aeaea] border-none text-white
+                                !font-bold uppercase hover:opacity-60"
+                        >
+                            Book an appointment
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-10">
@@ -282,98 +302,6 @@ const DoctorSection = () => {
             </div>
         </section>
     )
-};
-
-const Footer = () => {
-    return (
-        <footer className="bg-slate-900 text-slate-300 ">
-            <div className="container mx-auto px-4 py-10">
-                {/* Trusted by brands */}
-                <div className="flex flex-wrap items-center gap-3 justify-center mb-10">
-                    <span className="uppercase tracking-wider text-xs text-slate-400">Trusted by</span>
-                    {["MediX", "HealthOne", "BioCore", "CarePlus", "NovaLab"].map((b) => (
-                        <span key={b} className="px-3 py-1 rounded-full border border-slate-700 text-sm">
-                            {b}
-                        </span>
-                    ))}
-                </div>
-
-                {/* Main columns */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                    {/* Brand */}
-                    <div>
-                        <h3 className="text-white text-2xl font-bold">ProHealth</h3>
-                        <p className="mt-3 text-sm">
-                            Leading healthcare provider with modern facilities and a passionate team.
-                        </p>
-                        <div className="flex items-center gap-3 mt-4">
-                            <a aria-label="Facebook" className="p-2 rounded-full bg-slate-800 hover:bg-[#13c2c2] hover:text-white transition-colors">
-                                <FaFacebook />
-                            </a>
-                            <a aria-label="Instagram" className="p-2 rounded-full bg-slate-800 hover:bg-[#13c2c2] hover:text-white transition-colors">
-                                <FaInstagram />
-                            </a>
-                            <a aria-label="Twitter" className="p-2 rounded-full bg-slate-800 hover:bg-[#13c2c2] hover:text-white transition-colors">
-                                <FaTwitter />
-                            </a>
-                            <a aria-label="YouTube" className="p-2 rounded-full bg-slate-800 hover:bg-[#13c2c2] hover:text-white transition-colors">
-                                <FaYoutube />
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* Quick Links */}
-                    <div>
-                        <h4 className="text-white font-semibold mb-3 uppercase text-sm">Quick Links</h4>
-                        <ul className="space-y-2 text-sm">
-                            <li><a href="#hero" className="hover:text-white transition-colors">Home</a></li>
-                            <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
-                            <li><a href="#doctor" className="hover:text-white transition-colors">Departments</a></li>
-                            <li><a href="#doctors" className="hover:text-white transition-colors">Doctors</a></li>
-                            <li><a href="#appointment" className="hover:text-white transition-colors">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    {/* Departments */}
-                    <div>
-                        <h4 className="text-white font-semibold mb-3 uppercase text-sm">Departments</h4>
-                        <ul className="space-y-2 text-sm">
-                            <li>Cardiology</li>
-                            <li>Neurology</li>
-                            <li>Pediatrics</li>
-                            <li>Genecology</li>
-                            <li>Psychiatry</li>
-                        </ul>
-                    </div>
-
-                    {/* Contact */}
-                    <div>
-                        <h4 className="text-white font-semibold mb-3 uppercase text-sm">Contact</h4>
-                        <ul className="space-y-2 text-sm">
-                            <li className="flex items-start gap-2">
-                                <FaLocationDot className="mt-1 text-[#13c2c2]" />
-                                123 Wellness Ave, Hanoi, Vietnam
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <FaPhone className="text-[#13c2c2]" /> 1900-0091
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <FaEnvelope className="text-[#13c2c2]" /> support@prohealth.vn
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            {/* Bottom bar */}
-            <div className="border-t border-slate-800">
-                <div className="container mx-auto px-4 py-4 text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-between">
-                    <span>© {new Date().getFullYear()} ProHealth. All rights reserved.</span>
-                    <span className="text-slate-400">Made with care and love</span>
-                </div>
-            </div>
-        </footer>
-    );
 };
 
 

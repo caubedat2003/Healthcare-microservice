@@ -1,11 +1,13 @@
 # auth_service/views.py
 import requests
 from django.db import transaction
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer
+from .models import User
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 
 PATIENT_SERVICE_URL = "http://patient_service:8000/api/patient/"  # endpoint tạo patient
 
@@ -90,3 +92,9 @@ class LoginView(APIView):
                 "access": str(refresh.access_token)
             }, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]  # Cho phép truy cập không cần xác thực
+    
+    queryset = User.objects.all().order_by("-created_at")
+    serializer_class = UserSerializer

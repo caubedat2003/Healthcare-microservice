@@ -7,6 +7,13 @@ import Doctors from './pages/Doctors'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Appointment from './pages/Appointment'
+import AdminLayout from './layouts/AdminLayout'
+import DashboardAdmin from './pages/Admin/DashboardAdmin'
+import DoctorAdmin from './pages/Admin/DoctorAdmin'
+import UserAdmin from './pages/Admin/UserAdmin'
+import AppointmentAdmin from './pages/Admin/AppointmentAdmin'
+import PatientAdmin from './pages/Admin/PatientAdmin'
+
 
 function App() {
 
@@ -18,6 +25,14 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="appointment" element={<Appointment />} />
+      </Route>
+
+      <Route path='admin' element={<AdminLayout />}>
+        <Route index element={<DashboardAdmin />} />
+        <Route path="doctors" element={<DoctorAdmin />} />
+        <Route path="users" element={<UserAdmin />} />
+        <Route path="appointments" element={<AppointmentAdmin />} />
+        <Route path="patients" element={<PatientAdmin />} />
       </Route>
     </Routes>
   )

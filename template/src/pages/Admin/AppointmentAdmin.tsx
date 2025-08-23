@@ -56,7 +56,7 @@ const AppointmentAdmin = () => {
         try {
             const values = await editForm.validateFields();
             if (editingAppointment) {
-                await axios.put(`${BASE_URL}/api/appointment/${editingAppointment.id}/`, values);
+                await axios.patch(`${BASE_URL}/api/appointment/${editingAppointment.id}/`, values);
                 message.success('Appointment status updated successfully');
                 setIsEditModalVisible(false);
                 editForm.resetFields();

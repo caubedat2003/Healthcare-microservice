@@ -134,8 +134,8 @@ const DashboardAdmin = () => {
     };
 
     // Appointment status counts
-    const statusLabels = ["Pending", "Confirmed", "Completed", "Canceled"];
-    const statusValues = ["pending", "confirmed", "completed", "canceled"];
+    const statusLabels = ["Pending", "Confirmed", "Completed", "Cancelled"];
+    const statusValues = ["pending", "confirmed", "completed", "cancelled"];
     const statusCounts = statusValues.map(
         (status) => appointments.filter((appt) => appt.status === status).length
     );

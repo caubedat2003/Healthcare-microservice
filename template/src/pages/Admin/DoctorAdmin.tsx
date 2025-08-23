@@ -196,7 +196,7 @@ const DoctorAdmin = () => {
                             <Select.Option value="Emergency">Emergency</Select.Option>
                             <Select.Option value="Cardiology">Cardiology</Select.Option>
                             <Select.Option value="Pediatric">Pediatric</Select.Option>
-                            <Select.Option value="Genecology">Genecology</Select.Option>
+                            <Select.Option value="Gynecology">Gynecology</Select.Option>
                             <Select.Option value="Neurology">Neurology</Select.Option>
                             <Select.Option value="Psychiatry">Psychiatry</Select.Option>
                         </Select>
@@ -255,7 +255,7 @@ const DoctorAdmin = () => {
                             <Select.Option value="Emergency">Emergency</Select.Option>
                             <Select.Option value="Cardiology">Cardiology</Select.Option>
                             <Select.Option value="Pediatric">Pediatric</Select.Option>
-                            <Select.Option value="Genecology">Genecology</Select.Option>
+                            <Select.Option value="Gynecology">Gynecology</Select.Option>
                             <Select.Option value="Neurology">Neurology</Select.Option>
                             <Select.Option value="Psychiatry">Psychiatry</Select.Option>
                         </Select>

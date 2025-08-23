@@ -59,3 +59,29 @@ class DoctorDetailAPIView(APIView):
             return Response({"error": "Doctor not found"}, status=status.HTTP_404_NOT_FOUND)
         doctor.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+# API để lấy danh sách bác sĩ theo chuyên môn
+class DoctorBySpecializationAPIView(APIView):
+    def get(self, request, specialization):
+        # Danh sách các chuyên môn hợp lệ
+        valid_specializations = [
+            'Emergency', 'Cardiology', 'Pediatric', 'Gynecology', 'Neurology', 'Psychiatry'
+        ]
+        
+        # Kiểm tra xem specialization có hợp lệ không
+        if specialization not in valid_specializations:
+            return Response(
+                {"error": f"Invalid specialization. Must be one of: {', '.join(valid_specializations)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Lọc bác sĩ theo chuyên môn
+        doctors = Doctor.objects.filter(specialization=specialization)
+        if not doctors.exists():
+            return Response(
+                {"error": f"No doctors found for specialization: {specialization}"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = DoctorSerializer(doctors, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

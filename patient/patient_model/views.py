@@ -59,3 +59,13 @@ class PatientDetailAPIView(APIView):
             return Response({"error": "Patient not found"}, status=status.HTTP_404_NOT_FOUND)
         patient.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+# New: get patient by user_id
+class PatientByUserAPIView(APIView):
+    def get(self, request, user_id: int):
+        try:
+            patient = Patient.objects.get(user_id=user_id)
+        except Patient.DoesNotExist:
+            return Response({"error": "Patient not found for this user"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = PatientSerializer(patient)
+        return Response(serializer.data)

@@ -34,7 +34,7 @@ const ContactInfo = () => {
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6'>
                     <div className='flex flex-row items-center justify-start gap-5 p-6 border rounded-lg shadow-sm'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center">
+                        <div className="bg-[var(--color-primary)] rounded-full w-[64px] h-[64px] flex items-center justify-center">
                             <FiPhone className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -43,7 +43,7 @@ const ContactInfo = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center justify-start gap-5 p-6 border rounded-lg shadow-sm'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center">
+                        <div className="bg-[var(--color-primary)] rounded-full w-[64px] h-[64px] flex items-center justify-center">
                             <LuAmbulance className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -52,7 +52,7 @@ const ContactInfo = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center justify-start gap-5 p-6 border rounded-lg shadow-sm'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center">
+                        <div className="bg-[var(--color-primary)] rounded-full w-[64px] h-[64px] flex items-center justify-center">
                             <IoLocationOutline className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div className='flex flex-col'>
@@ -61,7 +61,7 @@ const ContactInfo = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center justify-start gap-5 p-6 border rounded-lg shadow-sm'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center">
+                        <div className="bg-[var(--color-primary)] rounded-full w-[64px] h-[64px] flex items-center justify-center">
                             <FaEnvelope className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>

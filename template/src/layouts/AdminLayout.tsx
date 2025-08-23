@@ -17,6 +17,7 @@ import {
 import { useState } from "react";
 import { FaListCheck, FaUserDoctor } from "react-icons/fa6";
 import { FaUserInjured } from "react-icons/fa";
+import { useAuth } from "../contexts/AuthContext";
 
 const { Header, Sider, Content } = Layout;
 
@@ -24,6 +25,7 @@ const { Header, Sider, Content } = Layout;
 const AdminLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
     const {
         token: { colorBgContainer },
@@ -83,21 +85,35 @@ const AdminLayout = () => {
                     </div>
 
                     <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
-                        <a href="#" className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
-                            <img
-                                alt=""
-                                src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                                className="size-10 rounded-full object-cover"
-                            />
-
-                            <div>
-                                <p className="text-xs">
-                                    <strong className="block font-medium">Eric Frusciante</strong>
-
-                                    <span> eric@frusciante.com </span>
-                                </p>
+                        <div>
+                            <div className="p-4 flex items-center gap-3">
+                                <Avatar size={40} className="!bg-[var(--color-primary)] !text-white !uppercase !font-bold">
+                                    {user?.full_name?.charAt(0).toUpperCase() || "A"}
+                                </Avatar>
+                                {!collapsed && (
+                                    <div className="flex flex-col text-white text-sm gap-1">
+                                        <span className="font-semibold">{user?.full_name}</span>
+                                        <span className="text-gray-400 text-xs">{user?.email}</span>
+                                    </div>
+                                )}
                             </div>
-                        </a>
+
+                            {!collapsed && (
+                                <div className="flex items-center justify-center pb-4">
+                                    <Button
+                                        type="link"
+                                        icon={<MdLogout />}
+                                        className="!bg-white !text-black hover:!bg-black hover:!text-white !border-none"
+                                        onClick={() => {
+                                            logout();
+                                            navigate("/");
+                                        }}
+                                    >
+                                        Đăng xuất
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </Sider>

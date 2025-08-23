@@ -28,7 +28,7 @@ const HeroSection = () => {
                 <div className="flex flex-col justify-center items-center text-center gap-5">
                     <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl italic font-[Times_New_Roman] font-semibold">Welcome To Our Clinic!</h2>
                     <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold">IT'S NICE TO MEET YOU</h1>
-                    <a className="p-6 bg-[#13c2c2] rounded-xl border-none text-white font-bold 
+                    <a className="p-6 bg-[var(--color-primary)] rounded-xl border-none text-white font-bold 
                         sm:text-xl md:text-3xl hover:bg-white hover:text-[#13c2c2] transition duration-300 ease-in-out"
                         href="#department"
                         onClick={e => {
@@ -54,7 +54,7 @@ const DepartmentSection = () => {
                 </div>
                 <div className='grid grid-cols-6 gap-6 mt-10'>
                     <Card
-                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[#13c2c2] group hover:scale-105 hover:-translate-y-2"
+                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
                         <div className='flex flex-col items-center justify-center'>
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
@@ -65,7 +65,7 @@ const DepartmentSection = () => {
                         </div>
                     </Card>
                     <Card
-                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[#13c2c2] group hover:scale-105 hover:-translate-y-2"
+                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
                         <div className='flex flex-col items-center justify-center'>
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
@@ -76,7 +76,7 @@ const DepartmentSection = () => {
                         </div>
                     </Card>
                     <Card
-                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[#13c2c2] group hover:scale-105 hover:-translate-y-2"
+                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
                         <div className='flex flex-col items-center justify-center'>
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
@@ -87,7 +87,7 @@ const DepartmentSection = () => {
                         </div>
                     </Card>
                     <Card
-                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[#13c2c2] group hover:scale-105 hover:-translate-y-2"
+                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
                         <div className='flex flex-col items-center justify-center'>
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
@@ -98,7 +98,7 @@ const DepartmentSection = () => {
                         </div>
                     </Card>
                     <Card
-                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[#13c2c2] group hover:scale-105 hover:-translate-y-2"
+                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
                         <div className='flex flex-col items-center justify-center'>
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
@@ -109,7 +109,7 @@ const DepartmentSection = () => {
                         </div>
                     </Card>
                     <Card
-                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[#13c2c2] group hover:scale-105 hover:-translate-y-2"
+                        className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
                         <div className='flex flex-col items-center justify-center'>
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
@@ -167,7 +167,7 @@ const ContactSection = () => {
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-10'>
                     <div className='flex flex-row items-center justify-center gap-5 p-6'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
+                        <div className="bg-[var(--color-primary)] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
                             <FiPhone className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -176,7 +176,7 @@ const ContactSection = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center justify-center gap-5 p-6'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
+                        <div className="bg-[var(--color-primary)] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
                             <LuAmbulance className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -185,7 +185,7 @@ const ContactSection = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center justify-center gap-5 p-6'>
-                        <div className="bg-[#13c2c2] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
+                        <div className="bg-[var(--color-primary)] rounded-full w-[64px] h-[64px] flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-105">
                             <IoLocationOutline className="text-white w-[32px] h-[32px]" />
                         </div>
                         <div>
@@ -284,13 +284,13 @@ const DoctorSection = () => {
                                 <p className="text-gray-500 text-sm text-center">{doctor.description}</p>
                                 <div>
                                     <div className="flex items-center text-white gap-3 mt-4">
-                                        <a aria-label="Facebook" className="p-2 rounded-full bg-[#13c2c2] hover:bg-slate-800 transition-colors">
+                                        <a aria-label="Facebook" className="p-2 rounded-full bg-[var(--color-primary)] hover:bg-slate-800 transition-colors">
                                             <FaFacebook />
                                         </a>
-                                        <a aria-label="Instagram" className="p-2 rounded-full bg-[#13c2c2] hover:bg-slate-800 hover:text-white transition-colors">
+                                        <a aria-label="Instagram" className="p-2 rounded-full bg-[var(--color-primary)] hover:bg-slate-800 hover:text-white transition-colors">
                                             <FaInstagram />
                                         </a>
-                                        <a aria-label="Twitter" className="p-2 rounded-full bg-[#13c2c2] hover:bg-slate-800 hover:text-white transition-colors">
+                                        <a aria-label="Twitter" className="p-2 rounded-full bg-[var(--color-primary)] hover:bg-slate-800 hover:text-white transition-colors">
                                             <FaTwitter />
                                         </a>
                                     </div>

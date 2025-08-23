@@ -13,28 +13,31 @@ import DoctorAdmin from './pages/Admin/DoctorAdmin'
 import UserAdmin from './pages/Admin/UserAdmin'
 import AppointmentAdmin from './pages/Admin/AppointmentAdmin'
 import PatientAdmin from './pages/Admin/PatientAdmin'
+import { AuthProvider } from './contexts/AuthContext'
 
 
 function App() {
 
   return (
-    <Routes>
-      <Route path='/' element={<UserLayout />}>
-        <Route index element={<Home />} />
-        <Route path="doctors" element={<Doctors />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="appointment" element={<Appointment />} />
-      </Route>
+    <AuthProvider>
+      <Routes>
+        <Route path='/' element={<UserLayout />}>
+          <Route index element={<Home />} />
+          <Route path="doctors" element={<Doctors />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="appointment" element={<Appointment />} />
+        </Route>
 
-      <Route path='admin' element={<AdminLayout />}>
-        <Route index element={<DashboardAdmin />} />
-        <Route path="doctors" element={<DoctorAdmin />} />
-        <Route path="users" element={<UserAdmin />} />
-        <Route path="appointments" element={<AppointmentAdmin />} />
-        <Route path="patients" element={<PatientAdmin />} />
-      </Route>
-    </Routes>
+        <Route path='admin' element={<AdminLayout />}>
+          <Route index element={<DashboardAdmin />} />
+          <Route path="doctors" element={<DoctorAdmin />} />
+          <Route path="users" element={<UserAdmin />} />
+          <Route path="appointments" element={<AppointmentAdmin />} />
+          <Route path="patients" element={<PatientAdmin />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   )
 }
 

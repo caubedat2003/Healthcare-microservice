@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { FaUserLarge } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const NavbarDark = () => {
     const [isTop, setIsTop] = useState(true);
     const [loginVisible, setLoginVisible] = useState(false);
     const [registerVisible, setRegisterVisible] = useState(false);
@@ -45,7 +45,7 @@ const Navbar = () => {
     return (
         <>
             <header
-                className={`fixed top-0 w-full z-20 transition-colors duration-300 ${isTop ? 'bg-transparent shadow-none' : 'bg-white shadow'
+                className={`fixed top-0 w-full z-20 transition-colors duration-300 ${isTop ? 'bg-slate-800 shadow-none' : 'bg-white shadow'
                     }`}
             >
                 <div className="container mx-auto flex justify-between items-center p-4">
@@ -60,10 +60,6 @@ const Navbar = () => {
                             ${isTop ? 'text-white' : 'text-black'
                             }`}
                     >
-                        <a href="/appointment" className='text-base font-semibold'>APPOINTMENT</a>
-                        <a href="/doctors" className='text-base font-semibold'>DOCTORS</a>
-                        <a href="/about" className='text-base font-semibold'>ABOUT</a>
-                        <a href="/contact" className='text-base font-semibold'>CONTACT</a>
                         <div className='flex items-center gap-3'>
                             {user ? (
                                 <>
@@ -110,4 +106,4 @@ const Navbar = () => {
     );
 }
 
-export default Navbar;
+export default NavbarDark;

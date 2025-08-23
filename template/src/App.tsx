@@ -26,8 +26,10 @@ function App() {
           <Route path="doctors" element={<Doctors />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="appointment" element={<Appointment />} />
+
         </Route>
+
+        <Route path="appointment" element={<Appointment />} />
 
         <Route path='admin' element={<AdminLayout />}>
           <Route index element={<DashboardAdmin />} />

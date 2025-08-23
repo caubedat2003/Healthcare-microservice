@@ -121,7 +121,7 @@ const LoginModal: React.FC<Props> = ({ visible, onClose }) => {
         >
             <div className='grid grid-cols-2 gap-4 p-4'>
                 <div className='flex flex-col justify-center w-full'>
-                    <h1 className='flex items-center justify-center text-lg font-bold uppercase text-[var(--color-primary)]'>Login</h1>
+                    <h1 className='mb-2 flex items-center justify-center text-lg font-bold uppercase text-[var(--color-primary)]'>Login</h1>
                     <Form form={form} layout="vertical" onFinish={handleFinish} initialValues={{ email: '', password: '' }}>
                         <Form.Item
                             name="email"

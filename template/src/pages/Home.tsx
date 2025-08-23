@@ -82,7 +82,7 @@ const DepartmentSection = () => {
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
                                 <LiaDnaSolid className="w-[64px] h-[64px] text-[#13c2c2]  transition-colors duration-300" />
                             </div>
-                            <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Genecology</p>
+                            <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Gynecology</p>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Department</p>
                         </div>
                     </Card>

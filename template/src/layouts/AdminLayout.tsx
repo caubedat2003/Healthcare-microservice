@@ -1,6 +1,6 @@
 
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -76,7 +76,7 @@ const AdminLayout = () => {
                 <div className="flex h-screen flex-col justify-between border-e border-gray-100 bg-slate-800 text-white">
                     <div className="px-4 py-6">
                         <div className="text-white text-xl font-bold text-center pb-4 align-middle justify-center flex items-center">
-                            {!collapsed ? "Admin Panel" : "Admin"}
+                            <Link to="/" className="!text-white">{!collapsed ? "Admin Panel" : "Admin"}</Link>
                         </div>
 
                         <div className="!flex-1 !overflow-auto">

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import logo from '../assets/logo.svg';
 import { Button, message } from 'antd';
 import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
 import { useAuth } from '../contexts/AuthContext';
 import { FaUserLarge } from 'react-icons/fa6';
 
 const Navbar = () => {
     const [isTop, setIsTop] = useState(true);
     const [loginVisible, setLoginVisible] = useState(false);
+    const [registerVisible, setRegisterVisible] = useState(false);
     const { user, logout } = useAuth();
 
     useEffect(() => {
@@ -62,7 +64,7 @@ const Navbar = () => {
                                     <Button onClick={() => setLoginVisible(true)} variant="solid" color="cyan" className='!text-base !font-bold'>
                                         Login
                                     </Button>
-                                    <Button color="cyan" variant="outlined" ghost className='!text-base !font-bold'>
+                                    <Button onClick={() => setRegisterVisible(true)} color="cyan" variant="outlined" ghost className='!text-base !font-bold'>
                                         Register
                                     </Button>
                                 </>
@@ -73,6 +75,7 @@ const Navbar = () => {
             </header>
 
             <LoginModal visible={loginVisible} onClose={() => setLoginVisible(false)} />
+            <RegisterModal visible={registerVisible} onClose={() => setRegisterVisible(false)} />
         </>
     );
 }

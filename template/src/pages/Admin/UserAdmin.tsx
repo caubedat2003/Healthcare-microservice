@@ -1,26 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Button, Modal, Form, Input, message, Select } from 'antd';
+import type { SortOrder } from 'antd/es/table/interface';
 import { AiFillEdit } from 'react-icons/ai';
 import { FaTrash } from 'react-icons/fa';
 import { MdAdd } from 'react-icons/md';
 
+interface User {
+    id: number;
+    email: string;
+    full_name: string;
+    role: string;
+    created_at: string;
+}
+
 const UserAdmin = () => {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
     const [editingUser, setEditingUser] = useState<User | null>(null);
+    const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8080";
 
     useEffect(() => {
         fetchUsers();
     }, []);
 
+    const setFormErrorsFromApi = (formInstance: any, data: any) => {
+        if (!data) return;
+        const fields: any[] = [];
+        for (const [key, val] of Object.entries(data)) {
+            if (Array.isArray(val)) {
+                fields.push({ name: key, errors: val.map((v) => String(v)) });
+            } else if (val && typeof val === 'object') {
+                const nestedValues = Object.values(val).flat?.() ?? Object.values(val).map(String);
+                fields.push({ name: key, errors: nestedValues.map((v: any) => String(v)) });
+            } else if (val != null) {
+                fields.push({ name: key, errors: [String(val)] });
+            }
+        }
+        if (fields.length) {
+            try {
+                formInstance.setFields(fields);
+            } catch (e) {
+                message.error(Object.values(data).flat?.().join(' ') || 'Validation error');
+            }
+        } else if (data.non_field_errors) {
+            const nf = Array.isArray(data.non_field_errors) ? data.non_field_errors.join(' ') : String(data.non_field_errors);
+            message.error(nf);
+        }
+    };
+
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/auth/users/');
-            setUsers(response.data);
+            const response = await axios.get(`${BASE_URL}/api/auth/users/`);
+            const sorted = Array.isArray(response.data)
+                ? response.data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+                : response.data;
+            setUsers(sorted);
         } catch (error) {
             message.error('Failed to fetch users');
         }
@@ -33,13 +71,17 @@ const UserAdmin = () => {
     const handleCreateOk = async () => {
         try {
             const values = await form.validateFields();
-            await axios.post('http://localhost:8080/api/auth/users/', values);
+            await axios.post(`${BASE_URL}/api/auth/users/`, values);
             message.success('User created successfully');
             setIsCreateModalVisible(false);
             form.resetFields();
             fetchUsers();
-        } catch (error) {
-            message.error('Failed to create user');
+        } catch (error: any) {
+            if (axios.isAxiosError(error) && error.response?.data) {
+                setFormErrorsFromApi(form, error.response.data);
+            } else {
+                message.error('Failed to create user');
+            }
         }
     };
 
@@ -61,7 +103,7 @@ const UserAdmin = () => {
         try {
             const values = await editForm.validateFields();
             if (editingUser) {
-                await axios.put(`http://localhost:8080/api/auth/users/${editingUser.id}/`, values);
+                await axios.put(`${BASE_URL}/api/auth/users/${editingUser.id}/`, values);
                 message.success('User updated successfully');
                 setIsEditModalVisible(false);
                 editForm.resetFields();
@@ -69,8 +111,12 @@ const UserAdmin = () => {
             } else {
                 message.error('No user selected for editing.');
             }
-        } catch (error) {
-            message.error('Failed to update user');
+        } catch (error: any) {
+            if (axios.isAxiosError(error) && error.response?.data) {
+                setFormErrorsFromApi(editForm, error.response.data);
+            } else {
+                message.error('Failed to update user');
+            }
         }
     };
 
@@ -79,30 +125,40 @@ const UserAdmin = () => {
         editForm.resetFields();
     };
 
-    const handleDelete = async (id: number) => {
-        try {
-            await axios.delete(`http://localhost:8080/api/auth/users/${id}/`);
-            message.success('User deleted successfully');
-            fetchUsers();
-        } catch (error) {
-            message.error('Failed to delete user');
-        }
+    const handleDelete = (id: number) => {
+        Modal.confirm({
+            title: 'Confirm Delete',
+            content: 'Are you sure you want to delete this user? This action cannot be undone.',
+            okType: 'danger',
+            onOk: async () => {
+                try {
+                    await axios.delete(`${BASE_URL}/api/auth/users/${id}/`);
+                    message.success('User deleted successfully');
+                    fetchUsers();
+                } catch (error) {
+                    message.error('Failed to delete user');
+                }
+            },
+        });
     };
-
-    interface User {
-        id: number;
-        email: string;
-        full_name: string;
-        role: string;
-        created_at: string;
-    }
 
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id' },
         { title: 'Email', dataIndex: 'email', key: 'email' },
         { title: 'Full Name', dataIndex: 'full_name', key: 'full_name' },
         { title: 'Role', dataIndex: 'role', key: 'role' },
-        { title: 'Created At', dataIndex: 'created_at', key: 'created_at' },
+        {
+            title: 'Created At',
+            dataIndex: 'created_at',
+            key: 'created_at',
+            render: (value: string) => (value ? new Date(value).toLocaleString() : '-'),
+            sorter: (a: User, b: User) => {
+                const ta = a.created_at ? new Date(a.created_at).getTime() : 0;
+                const tb = b.created_at ? new Date(b.created_at).getTime() : 0;
+                return ta - tb;
+            },
+            defaultSortOrder: 'descend' as SortOrder,
+        },
         {
             title: 'Actions',
             key: 'actions',

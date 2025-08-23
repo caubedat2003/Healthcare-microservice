@@ -6,6 +6,19 @@ import { MdAdd } from 'react-icons/md';
 import { FaEye, FaTrash } from 'react-icons/fa';
 import { AiFillEdit } from 'react-icons/ai';
 
+type Patient = {
+    id: number;
+    user_id?: number;
+    full_name: string;
+    gender?: string;
+    date_of_birth?: string;
+    phone_number?: string;
+    address?: string;
+    blood_type?: string;
+    medical_history?: string;
+    created_at?: string;
+};
+
 const PatientAdmin = () => {
     const [patients, setPatients] = useState([]);
     const [isViewModalVisible, setIsViewModalVisible] = useState(false);
@@ -15,6 +28,7 @@ const PatientAdmin = () => {
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
     const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+    const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8080";
 
     useEffect(() => {
         fetchPatients();
@@ -22,11 +36,27 @@ const PatientAdmin = () => {
 
     const fetchPatients = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/patient/');
-            setPatients(response.data);
+            const response = await axios.get(`${BASE_URL}/api/patient/`);
+            // sort by created_at newest first for display
+            setPatients(response.data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()));
         } catch (error) {
             message.error('Failed to fetch patients');
         }
+    };
+
+    // map DRF validation response to AntD form fields and global messages
+    const setFormErrorsFromApi = (formInstance: any, data: any) => {
+        if (!data) return;
+        const fieldErrors = Object.entries(data)
+            .filter(([k]) => k !== 'non_field_errors' && k !== 'detail')
+            .map(([name, errs]) => ({ name, errors: Array.isArray(errs) ? errs : [String(errs)] }));
+
+        if (fieldErrors.length) {
+            try { formInstance.setFields(fieldErrors); } catch (e) { /* ignore */ }
+        }
+
+        const global = data.non_field_errors || data.detail;
+        if (global) message.error(Array.isArray(global) ? global.join(' ') : String(global));
     };
 
     const showViewModal = (record: Patient) => {
@@ -49,13 +79,18 @@ const PatientAdmin = () => {
             if (values.date_of_birth) {
                 values.date_of_birth = values.date_of_birth.format("YYYY-MM-DD");
             }
-            await axios.post('http://localhost:8080/api/patient/', values);
+            await axios.post(`${BASE_URL}/api/patient/`, values);
             message.success('Patient created successfully');
             setIsCreateModalVisible(false);
             form.resetFields();
             fetchPatients();
-        } catch (error) {
-            message.error('Failed to create patient');
+        } catch (error: any) {
+            const apiData = error?.response?.data;
+            if (apiData) {
+                setFormErrorsFromApi(form, apiData);
+            } else {
+                message.error('Failed to create patient');
+            }
         }
     };
 
@@ -80,7 +115,7 @@ const PatientAdmin = () => {
                 if (values.date_of_birth) {
                     values.date_of_birth = values.date_of_birth.format("YYYY-MM-DD");
                 }
-                await axios.put(`http://localhost:8080/api/patient/${editingPatient.id}/`, values);
+                await axios.put(`${BASE_URL}/api/patient/${editingPatient.id}/`, values);
                 message.success('Patient updated successfully');
                 setIsEditModalVisible(false);
                 setEditingPatient(null);
@@ -89,8 +124,13 @@ const PatientAdmin = () => {
             } else {
                 message.error('No patient selected for editing');
             }
-        } catch (error) {
-            message.error('Failed to update patient');
+        } catch (error: any) {
+            const apiData = error?.response?.data;
+            if (apiData) {
+                setFormErrorsFromApi(editForm, apiData);
+            } else {
+                message.error('Failed to update patient');
+            }
         }
     };
     const handleEditCancel = () => {
@@ -100,26 +140,22 @@ const PatientAdmin = () => {
     };
 
     const handleDelete = async (id: number) => {
-        try {
-            await axios.delete(`http://localhost:8080/api/patient/${id}/`);
-            message.success('Patient deleted successfully');
-            fetchPatients();
-        } catch (error) {
-            message.error('Failed to delete patient');
-        }
-    };
-
-    type Patient = {
-        id: number;
-        user_id?: number;
-        full_name: string;
-        gender?: string;
-        date_of_birth?: string;
-        phone_number?: string;
-        address?: string;
-        blood_type?: string;
-        medical_history?: string;
-        created_at?: string;
+        Modal.confirm({
+            title: 'Delete patient',
+            content: 'Are you sure you want to delete this patient? This action cannot be undone.',
+            okText: 'Delete',
+            okType: 'danger',
+            cancelText: 'Cancel',
+            onOk: async () => {
+                try {
+                    await axios.delete(`${BASE_URL}/api/patient/${id}/`);
+                    message.success('Patient deleted successfully');
+                    fetchPatients();
+                } catch (error) {
+                    message.error('Failed to delete patient');
+                }
+            }
+        });
     };
 
     const columns = [
@@ -129,6 +165,7 @@ const PatientAdmin = () => {
         { title: 'Gender', dataIndex: 'gender', key: 'gender', width: 100 },
         { title: 'Date of Birth', dataIndex: 'date_of_birth', key: 'date_of_birth', width: 120 },
         { title: 'Phone Number', dataIndex: 'phone_number', key: 'phone_number', width: 140 },
+        { title: 'Created At', dataIndex: 'created_at', key: 'created_at', render: (value: string) => value ? new Date(value).toLocaleString() : '-', sorter: (a: Patient, b: Patient) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime(), defaultSortOrder: 'descend' as any },
         {
             title: 'Actions',
             key: 'actions',

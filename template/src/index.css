@@ -8,3 +8,8 @@ body {
     font-size: 16px;
     @apply bg-gray-100 text-gray-900;
 }
+
+.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-dark>.ant-menu .ant-menu-item-selected {
+    background-color: #13c2c2 !important;
+}

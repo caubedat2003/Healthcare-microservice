@@ -14,6 +14,7 @@ import UserAdmin from './pages/Admin/UserAdmin'
 import AppointmentAdmin from './pages/Admin/AppointmentAdmin'
 import PatientAdmin from './pages/Admin/PatientAdmin'
 import { AuthProvider } from './contexts/AuthContext'
+import Chatbot from './pages/Chatbot'
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         </Route>
 
         <Route path="appointment" element={<Appointment />} />
+        <Route path="chat-ai" element={<Chatbot />} />
 
         <Route path='admin' element={<AdminLayout />}>
           <Route index element={<DashboardAdmin />} />

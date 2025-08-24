@@ -5,6 +5,7 @@ import type { SortOrder } from 'antd/es/table/interface';
 import { AiFillEdit } from 'react-icons/ai';
 import { FaTrash } from 'react-icons/fa';
 import { MdAdd } from 'react-icons/md';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface User {
     id: number;
@@ -21,6 +22,7 @@ const UserAdmin = () => {
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
     const [editingUser, setEditingUser] = useState<User | null>(null);
+    const { token } = useAuth();
     const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8080";
 
     useEffect(() => {
@@ -71,7 +73,9 @@ const UserAdmin = () => {
     const handleCreateOk = async () => {
         try {
             const values = await form.validateFields();
-            await axios.post(`${BASE_URL}/api/auth/users/`, values);
+            await axios.post(`${BASE_URL}/api/auth/create-account/`, values, {
+                headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+            });
             message.success('User created successfully');
             setIsCreateModalVisible(false);
             form.resetFields();
@@ -103,7 +107,9 @@ const UserAdmin = () => {
         try {
             const values = await editForm.validateFields();
             if (editingUser) {
-                await axios.put(`${BASE_URL}/api/auth/users/${editingUser.id}/`, values);
+                await axios.put(`${BASE_URL}/api/auth/users/${editingUser.id}/`, values, {
+                    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+                });
                 message.success('User updated successfully');
                 setIsEditModalVisible(false);
                 editForm.resetFields();
@@ -211,6 +217,13 @@ const UserAdmin = () => {
                             <Select.Option value="admin">Admin</Select.Option>
                             <Select.Option value="doctor">Doctor</Select.Option>
                         </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="password"
+                        label="Password"
+                        rules={[{ required: true, message: 'Please input password!' }]}
+                    >
+                        <Input.Password />
                     </Form.Item>
                 </Form>
             </Modal>

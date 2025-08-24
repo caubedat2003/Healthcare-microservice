@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, type ReactNode, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
+import axios from 'axios';
 
 interface User {
     email: string;
@@ -38,6 +39,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (savedUser && savedToken) {
             setUser(JSON.parse(savedUser));
             setToken(savedToken);
+            // set axios default header so all requests include Authorization
+            axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
         }
     }, []);
 
@@ -79,6 +82,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setToken(tokenData);
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("token", tokenData);
+        // set axios default header for authenticated requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${tokenData}`;
     };
 
     const logout = () => {
@@ -86,6 +91,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setToken(null);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        // remove axios default header
+        delete axios.defaults.headers.common['Authorization'];
     };
 
     return (

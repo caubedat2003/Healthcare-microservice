@@ -18,6 +18,7 @@ const Chatbot: React.FC = () => {
     const [input, setInput] = useState<string>('');
     const [isFinished, setIsFinished] = useState<boolean>(false);
     const chatEndRef = useRef<HTMLDivElement>(null);
+    const CHATBOT_URL = import.meta.env.VITE_CHATBOT_URL || 'http://localhost:5000';
 
     useEffect(() => {
         startConversation();
@@ -33,7 +34,7 @@ const Chatbot: React.FC = () => {
 
     const startConversation = async () => {
         try {
-            const res = await axios.post('http://localhost:5000/chatbot/start', {}, { withCredentials: true });
+            const res = await axios.post(`${CHATBOT_URL}/chatbot/start`, {}, { withCredentials: true });
             setMessages([{ text: res.data.message, sender: 'bot' }]);
             setIsFinished(false);
         } catch (err) {
@@ -48,7 +49,7 @@ const Chatbot: React.FC = () => {
         const userMessage: Message = { text: input, sender: 'user' };
         setMessages((prev) => [...prev, userMessage]);
         try {
-            const res = await axios.post('http://localhost:5000/chatbot/respond', { input }, { withCredentials: true });
+            const res = await axios.post(`${CHATBOT_URL}/chatbot/respond`, { input }, { withCredentials: true });
             const botMessage: Message = { text: res.data.message, sender: 'bot' };
             setMessages((prev) => [...prev, botMessage]);
             if (res.data.finished) {

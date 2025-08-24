@@ -19,7 +19,7 @@ type AppointmentType = {
     status: string;
 };
 
-const Appointment = () => {
+const AppointmentPatient = () => {
     const { user, token } = useAuth();
     const [appointments, setAppointments] = useState<AppointmentType[]>([]);
     const [doctorsMap, setDoctorsMap] = useState<Record<number, string>>({});
@@ -156,8 +156,6 @@ const Appointment = () => {
         setSelectedDate(null);
     };
 
-    // no per-appointment detail modal
-
     return (
         <div className='bg-white'>
             <NavbarDark />
@@ -217,4 +215,4 @@ const Appointment = () => {
         </div>
     );
 }
-export default Appointment;
+export default AppointmentPatient;

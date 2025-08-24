@@ -26,9 +26,9 @@ const Navbar = () => {
             onClick: () => navigate('/chat-ai'),
         },
         {
-            key: "profile",
+            key: "user-profile",
             label: "My Profile",
-            onClick: () => navigate('/profile'),
+            onClick: () => navigate('/user-profile'),
         },
     ];
 

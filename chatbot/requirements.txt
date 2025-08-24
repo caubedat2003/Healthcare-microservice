@@ -1,0 +1,9 @@
+Flask
+Flask-Cors
+Flask-Session
+scikit-learn
+pandas
+numpy
+scipy
+pyttsx3
+gunicorn

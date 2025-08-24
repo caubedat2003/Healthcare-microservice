@@ -416,3 +416,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Ignore chatbot flask session files
+/chatbot/flask_session/
+/chatbot/flask_session/**

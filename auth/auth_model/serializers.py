@@ -55,3 +55,18 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+class CreateAccountSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    role = serializers.ChoiceField(choices=[("patient", "patient"), ("doctor", "doctor"), ("admin", "admin")])
+
+    class Meta:
+        model = User
+        fields = ["email", "full_name", "password", "role"]
+
+    def create(self, validated_data):
+        # Extract password and role, then create user with provided role
+        password = validated_data.pop("password")
+        role = validated_data.pop("role", "patient")
+        validated_data["role"] = role
+        return User.objects.create_user(password=password, **validated_data)

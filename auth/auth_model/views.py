@@ -4,12 +4,13 @@ from django.db import transaction
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 
 PATIENT_SERVICE_URL = "http://patient_service:8000/api/patient/"  # endpoint tạo patient
+DOCTOR_SERVICE_URL = "http://doctor_service:8000/api/doctor/"
 
 class RegisterView(APIView):
     """
@@ -78,6 +79,81 @@ class RegisterView(APIView):
             "access": str(refresh.access_token),
             "patient": patient_data
         }, status=status.HTTP_201_CREATED)
+
+
+class CreateAccountView(APIView):
+    """Admin-only endpoint to create users with a specified role (patient|doctor|admin).
+
+    Behavior:
+    - Creates the User record.
+    - If role == 'patient': calls patient service to create patient record.
+    - If role == 'doctor': calls doctor service to create doctor record.
+    - If role == 'admin': sets is_staff and is_superuser on the user.
+    - On downstream failure, rolls back (deletes) the created User and returns error.
+    """
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        from .serializers import CreateAccountSerializer
+
+        serializer = CreateAccountSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create user
+        try:
+            with transaction.atomic():
+                user = serializer.save()
+        except Exception as e:
+            return Response({"error": "Failed to create user", "details": str(e)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        role = getattr(user, "role", "patient")
+
+        # If admin role, promote and return
+        if role == "admin":
+            try:
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
+            except Exception as e:
+                user.delete()
+                return Response({"error": "Failed to set admin flags", "details": str(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            return Response({"message": "Admin user created", "user_id": user.id}, status=status.HTTP_201_CREATED)
+
+        # Prepare payload for downstream service
+        downstream_payload = {
+            "user_id": user.id,
+            "full_name": getattr(user, "full_name", ""),
+            "created_at": user.created_at.isoformat() if user.created_at else None
+        }
+
+        target_url = PATIENT_SERVICE_URL if role == "patient" else DOCTOR_SERVICE_URL
+
+        try:
+            resp = requests.post(target_url, json=downstream_payload, headers={"Host": "localhost"}, timeout=5)
+        except requests.RequestException as exc:
+            user.delete()
+            return Response({"error": f"{role.capitalize()} service unreachable", "details": str(exc)},
+                            status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        if resp.status_code not in (200, 201):
+            user.delete()
+            try:
+                detail = resp.json()
+            except Exception:
+                detail = resp.text
+            return Response({"error": f"Failed to create {role} record", f"{role}_service_response": detail},
+                            status=status.HTTP_502_BAD_GATEWAY)
+
+        try:
+            created_data = resp.json()
+        except ValueError:
+            created_data = {"raw": resp.text}
+
+        return Response({"message": f"User and {role} record created", "user_id": user.id, role: created_data}, status=status.HTTP_201_CREATED)
 
 
 class LoginView(APIView):

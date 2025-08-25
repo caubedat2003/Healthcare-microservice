@@ -85,3 +85,14 @@ class DoctorBySpecializationAPIView(APIView):
         
         serializer = DoctorSerializer(doctors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+# API để lấy bác sĩ theo user_id
+class DoctorByUserAPIView(APIView):
+    def get(self, request, user_id: int):
+        try:
+            doctor = Doctor.objects.get(user_id=user_id)
+        except Doctor.DoesNotExist:
+            return Response({"error": "Doctor not found for this user"}, 
+                            status=status.HTTP_404_NOT_FOUND)
+        serializer = DoctorSerializer(doctor)
+        return Response(serializer.data)

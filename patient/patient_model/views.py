@@ -66,6 +66,7 @@ class PatientByUserAPIView(APIView):
         try:
             patient = Patient.objects.get(user_id=user_id)
         except Patient.DoesNotExist:
-            return Response({"error": "Patient not found for this user"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Patient not found for this user"}, 
+                            status=status.HTTP_404_NOT_FOUND)
         serializer = PatientSerializer(patient)
         return Response(serializer.data)

@@ -122,7 +122,7 @@ const AppointmentAdmin = () => {
         },
         { title: 'Time', dataIndex: 'appointment_time', key: 'appointment_time' },
         { title: 'Status', dataIndex: 'status', key: 'status' },
-        { title: 'Reason', dataIndex: 'reason', key: 'reason' },
+        { title: 'Reason', dataIndex: 'reason', key: 'reason', width: 400 },
         {
             title: 'Created At',
             dataIndex: 'created_at',

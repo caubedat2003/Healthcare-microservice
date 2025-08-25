@@ -133,7 +133,7 @@ const BookAppointmentModal: React.FC<Props> = ({ visible, onClose, onCreated }) 
                             <Form.Item
                                 name="specialization"
                                 label="Specialization"
-                                rules={[{ required: true, message: 'Please select specialization!' }]}
+
                             >
                                 <Select placeholder="Select specialization (optional)" allowClear onChange={(val) => { form.setFieldsValue({ doctor_id: undefined }); fetchDoctors(val || null); }}>
                                     <Select.Option value="Emergency">Emergency</Select.Option>

@@ -4,8 +4,12 @@ import { Button, Dropdown, message, type MenuProps } from 'antd';
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import { useAuth } from '../contexts/AuthContext';
-import { FaUserLarge } from 'react-icons/fa6';
+import { FaListUl, FaUserLarge, FaUserNurse, FaUserTie } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import { BsRobot } from 'react-icons/bs';
+import { GoTasklist } from 'react-icons/go';
+import { GrDocumentText } from 'react-icons/gr';
+import { MdDashboard } from 'react-icons/md';
 
 const Navbar = () => {
     const [isTop, setIsTop] = useState(true);
@@ -14,21 +18,60 @@ const Navbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-    const items: MenuProps["items"] = [
+    const patientItems: MenuProps["items"] = [
         {
             key: "appointments",
             label: "My Appointments",
+            icon: <FaListUl />,
             onClick: () => navigate('/appointment'),
         },
         {
             key: "chat-ai",
             label: "Chat with AI",
+            icon: <BsRobot />,
             onClick: () => navigate('/chat-ai'),
         },
         {
             key: "user-profile",
             label: "My Profile",
+            icon: <FaUserLarge />,
             onClick: () => navigate('/user-profile'),
+        },
+    ];
+
+    const doctorItems: MenuProps["items"] = [
+        {
+            key: "appointments",
+            label: "My Appointments",
+            icon: <GoTasklist />,
+            onClick: () => navigate('/doctor/appointments'),
+        },
+        {
+            key: "medical-records",
+            label: "Medical Records",
+            icon: <GrDocumentText />,
+            onClick: () => navigate('/doctor/medical-records'),
+        },
+        {
+            key: "profile",
+            label: "My Profile",
+            icon: <FaUserNurse />,
+            onClick: () => navigate('/doctor/profile'),
+        },
+    ];
+
+    const adminItems: MenuProps["items"] = [
+        {
+            key: "dashboard",
+            label: "Dashboard",
+            icon: <MdDashboard />,
+            onClick: () => navigate('/admin'),
+        },
+        {
+            key: "profile",
+            label: "Profile",
+            icon: <FaUserTie />,
+            onClick: () => navigate('/admin/profile'),
         },
     ];
 
@@ -67,13 +110,31 @@ const Navbar = () => {
                         <div className='flex items-center gap-3'>
                             {user ? (
                                 <>
-                                    <Dropdown menu={{ items }} trigger={["click"]} placement="bottomLeft">
-                                        <Button color="cyan" variant="outlined" ghost
-                                            className='!text-base !uppercase !font-medium mr-3'
-                                        >
-                                            <FaUserLarge /> {user.full_name || user.email}
-                                        </Button>
-                                    </Dropdown>
+                                    {user.role === 'patient' ? (
+                                        <Dropdown menu={{ items: patientItems }} trigger={["click"]} placement="bottomLeft">
+                                            <Button color="cyan" variant="outlined" ghost
+                                                className='!text-base !uppercase !font-medium mr-3'
+                                            >
+                                                <FaUserLarge /> {user.full_name || user.email}
+                                            </Button>
+                                        </Dropdown>
+                                    ) : user.role === 'doctor' ? (
+                                        <Dropdown menu={{ items: doctorItems }} trigger={["click"]} placement="bottomLeft">
+                                            <Button color="cyan" variant="outlined" ghost
+                                                className='!text-base !uppercase !font-medium mr-3'
+                                            >
+                                                <FaUserLarge /> {user.full_name || user.email}
+                                            </Button>
+                                        </Dropdown>
+                                    ) : user.role === 'admin' ? (
+                                        <Dropdown menu={{ items: adminItems }} trigger={["click"]} placement="bottomLeft">
+                                            <Button color="cyan" variant="outlined" ghost
+                                                className='!text-base !uppercase !font-medium mr-3'
+                                            >
+                                                <FaUserLarge /> {user.full_name || user.email}
+                                            </Button>
+                                        </Dropdown>
+                                    ) : null}
                                     <Button
                                         onClick={() => {
                                             logout();

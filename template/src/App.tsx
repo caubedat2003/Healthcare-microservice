@@ -28,12 +28,12 @@ function App() {
       <Routes>
         <Route path='/' element={<UserLayout />}>
           <Route index element={<Home />} />
-          <Route path="doctors" element={<Doctors />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
         </Route>
 
         <Route path="appointment" element={<AppointmentPatient />} />
+        <Route path="doctors" element={<Doctors />} />
         <Route path="chat-ai" element={<Chatbot />} />
         <Route path="user-profile" element={<UserProfile />} />
 

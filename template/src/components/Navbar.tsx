@@ -103,14 +103,12 @@ const Navbar = () => {
                             ${isTop ? 'text-white' : 'text-black'
                             }`}
                     >
-                        {user?.role === 'patient' ? (
-                            <>
-                                <a href="/appointment" className='text-base font-semibold'>APPOINTMENT</a>
-                                <a href="/doctors" className='text-base font-semibold'>DOCTORS</a>
-                                <a href="/about" className='text-base font-semibold'>ABOUT</a>
-                                <a href="/contact" className='text-base font-semibold'>CONTACT</a>
-                            </>
-                        ) : null}
+                        <>
+                            <a href="/appointment" className='text-base font-semibold'>APPOINTMENT</a>
+                            <a href="/doctors" className='text-base font-semibold'>DOCTORS</a>
+                            <a href="/about" className='text-base font-semibold'>ABOUT</a>
+                            <a href="/contact" className='text-base font-semibold'>CONTACT</a>
+                        </>
                         <div className='flex items-center gap-3'>
                             {user ? (
                                 <>

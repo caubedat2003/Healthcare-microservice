@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Spin } from "antd";
+import { Avatar, Button, Card, message, Spin } from "antd";
 import userIcon from '../../assets/user.png';
 import { FaUserEdit } from "react-icons/fa";
 import { FaKey } from "react-icons/fa6";
@@ -20,7 +20,7 @@ const DoctorProfile = () => {
                 setUserData(userResponse.data);
                 setDoctorData(doctorResponse.data);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                message.error('Error fetching doctors: ' + String(error));
             }
         };
         if (user?.id) fetchUserData();

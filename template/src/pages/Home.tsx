@@ -56,68 +56,68 @@ const DepartmentSection = () => {
                     <Card
                         className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
-                        <div className='flex flex-col items-center justify-center'>
+                        <a className='flex flex-col items-center justify-center' href="/doctors#Emergency">
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
                                 <RiAlarmWarningFill className="w-[64px] h-[64px] text-[#13c2c2]  transition-colors duration-300" />
                             </div>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Emergency</p>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Department</p>
-                        </div>
+                        </a>
                     </Card>
                     <Card
                         className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
-                        <div className='flex flex-col items-center justify-center'>
+                        <a className='flex flex-col items-center justify-center' href="/doctors#Pediatric">
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
                                 <LuBaby className="w-[64px] h-[64px] text-[#13c2c2]  transition-colors duration-300" />
                             </div>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Pediatric</p>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Department</p>
-                        </div>
+                        </a>
                     </Card>
                     <Card
                         className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
-                        <div className='flex flex-col items-center justify-center'>
+                        <a className='flex flex-col items-center justify-center' href="/doctors#Gynecology">
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
                                 <LiaDnaSolid className="w-[64px] h-[64px] text-[#13c2c2]  transition-colors duration-300" />
                             </div>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Gynecology</p>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Department</p>
-                        </div>
+                        </a>
                     </Card>
                     <Card
                         className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
-                        <div className='flex flex-col items-center justify-center'>
+                        <a className='flex flex-col items-center justify-center ' href="/doctors#Cardiology">
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
                                 <GiHeartOrgan className="w-[64px] h-[64px] text-[#13c2c2]  transition-colors duration-300" />
                             </div>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Cardiology</p>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Department</p>
-                        </div>
+                        </a>
                     </Card>
                     <Card
                         className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
-                        <div className='flex flex-col items-center justify-center'>
+                        <a className='flex flex-col items-center justify-center ' href="/doctors#Neurology">
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
                                 <FaSyringe className="w-[64px] h-[64px] text-[#13c2c2]  transition-colors duration-300" />
                             </div>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Neurology</p>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Department</p>
-                        </div>
+                        </a>
                     </Card>
                     <Card
                         className="shadow-md transition-all duration-300 ease-in-out hover:bg-[var(--color-primary)] group hover:scale-105 hover:-translate-y-2"
                     >
-                        <div className='flex flex-col items-center justify-center'>
+                        <a className='flex flex-col items-center justify-center' href="/doctors#Psychiatry">
                             <div className="w-[80px] h-[80px] flex items-center justify-center mb-3 bg-white rounded-full">
                                 <GiBrain className="w-[64px] h-[64px] text-[#13c2c2]  transition-colors duration-300" />
                             </div>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Psychiatry</p>
                             <p className='text-lg font-bold uppercase text-[#13c2c2]  transition-colors duration-300'>Department</p>
-                        </div>
+                        </a>
                     </Card>
                 </div>
             </div>

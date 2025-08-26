@@ -53,7 +53,7 @@ const Doctors = () => {
                 {SPECIALIZATIONS.map(spec => {
                     const doctors = doctorsBySpec[spec.key] || [];
                     return (
-                        <section key={spec.key} className="mb-8">
+                        <section key={spec.key} id={spec.label} className="mb-8">
                             <div className="flex items-center justify-between mb-3">
                                 <h2 className="text-2xl font-semibold">{spec.label}</h2>
                             </div>

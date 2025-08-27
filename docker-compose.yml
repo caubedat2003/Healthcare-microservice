@@ -143,6 +143,42 @@ services:
     networks:
       - healthcare_network
 
+  medical_record_postgres:
+    image: postgres:14
+    container_name: medical_record_db
+    restart: always
+    volumes:
+      - medical_record_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5437:5432"
+    environment:
+      POSTGRES_DB: medical_record_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - healthcare_network
+    
+  medical_record_service:
+    build:
+      context: ./medical_record
+    container_name: medical_record_service
+    command: gunicorn medical_record.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./medical_record:/app
+    ports:
+      - "8005:8000"
+    depends_on:
+      - medical_record_postgres
+    environment:
+      - DEBUG=1
+    networks:
+      - healthcare_network
+
   frontend:
     build:
       context: ./template
@@ -170,6 +206,8 @@ services:
       - patient_service
       - doctor_service
       - appointment_service
+      - auth_service
+      - medical_record_service
       - frontend
     networks:
       - healthcare_network
@@ -195,6 +233,7 @@ volumes:
   doctor_postgres_data:
   appointment_postgres_data:
   auth_postgres_data:
+  medical_record_postgres_data:
 
 networks:
   healthcare_network:

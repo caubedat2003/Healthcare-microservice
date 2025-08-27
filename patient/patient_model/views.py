@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Patient
 from .serializers import PatientSerializer
+from django.db.models import Q
 
 # API để lấy danh sách tất cả bệnh nhân hoặc tạo bệnh nhân mới
 class PatientListCreateAPIView(APIView):
@@ -69,4 +70,26 @@ class PatientByUserAPIView(APIView):
             return Response({"error": "Patient not found for this user"}, 
                             status=status.HTTP_404_NOT_FOUND)
         serializer = PatientSerializer(patient)
+        return Response(serializer.data)
+
+# New: search patients by name or phone
+class PatientSearchAPIView(APIView):
+    def get(self, request):
+        q = request.query_params.get('q')
+        full_name = request.query_params.get('full_name')
+        phone = request.query_params.get('phone_number')
+
+        if not (q or full_name or phone):
+            return Response({'error': 'Provide query param q or full_name or phone_number'}, status=status.HTTP_400_BAD_REQUEST)
+
+        filters = Q()
+        if q:
+            filters |= Q(full_name__icontains=q) | Q(phone_number__icontains=q)
+        if full_name:
+            filters |= Q(full_name__icontains=full_name)
+        if phone:
+            filters |= Q(phone_number__icontains=phone)
+
+        patients = Patient.objects.filter(filters)
+        serializer = PatientSerializer(patients, many=True)
         return Response(serializer.data)

@@ -1,6 +1,7 @@
 # auth_service/views.py
 import requests
 from django.db import transaction
+from django.db.models import Q
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -168,6 +169,31 @@ class LoginView(APIView):
                 "access": str(refresh.access_token)
             }, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserSearchAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        q = request.query_params.get('q')
+        full_name = request.query_params.get('full_name')
+        email = request.query_params.get('email')
+
+        if not (q or full_name or email):
+            return Response({'error': 'Provide query param q or full_name or email'}, status=status.HTTP_400_BAD_REQUEST)
+
+        filters = Q()
+        if q:
+            filters |= Q(full_name__icontains=q) | Q(email__icontains=q)
+        if full_name:
+            filters |= Q(full_name__icontains=full_name)
+        if email:
+            filters |= Q(email__icontains=email)
+
+        users = User.objects.filter(filters).order_by('-created_at')
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]  # Cho phép truy cập không cần xác thực

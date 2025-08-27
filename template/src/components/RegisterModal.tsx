@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, Form, Input, message, Button } from 'antd';
+import { Modal, Form, Input, message, Button, Divider } from 'antd';
 import axios from 'axios';
-import LogoPic from '../assets/pic-about-1.png';
+import LogoPic from '../assets/user.png';
 import { useAuth } from '../contexts/AuthContext';
 
 interface Props {
@@ -120,38 +120,37 @@ const RegisterModal: React.FC<Props> = ({ visible, onClose }) => {
                 </Button>
             ]}
         >
-            <div className='grid grid-cols-2 gap-4 p-4'>
-                <div className='flex flex-col justify-center w-full'>
-                    <h1 className='flex items-center justify-center text-lg font-bold uppercase text-[var(--color-primary)] mb-2'>Register</h1>
-                    <Form form={form} layout="vertical" onFinish={handleFinish} initialValues={{ email: '', full_name: '', password: '' }}>
-                        <Form.Item
-                            name="email"
-                            label="Email"
-                            rules={[{ required: true, message: 'Please enter your email' }, { type: 'email', message: 'Please enter a valid email' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="full_name"
-                            label="Full name"
-                            rules={[{ required: true, message: 'Please enter your full name' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="password"
-                            label="Password"
-                            rules={[{ required: true, message: 'Please enter your password' }]}
-                        >
-                            <Input.Password />
-                        </Form.Item>
-                    </Form>
-                </div>
+            <div className='flex flex-col justify-center w-full'>
+                <h1 className='flex items-center justify-center text-lg font-bold uppercase text-[var(--color-primary)]'>Register</h1>
+                <Divider></Divider>
                 <div className='flex flex-col justify-center align-middle items-center'>
-                    <img src={LogoPic} alt="Illustration" className="w-60 h-60 object-contain" />
+                    <img src={LogoPic} alt="Illustration" className="w-40 h-40 object-contain" />
                 </div>
+                <Form form={form} layout="vertical" onFinish={handleFinish} initialValues={{ email: '', full_name: '', password: '' }}>
+                    <Form.Item
+                        name="email"
+                        label="Email"
+                        rules={[{ required: true, message: 'Please enter your email' }, { type: 'email', message: 'Please enter a valid email' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="full_name"
+                        label="Full name"
+                        rules={[{ required: true, message: 'Please enter your full name' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="password"
+                        label="Password"
+                        rules={[{ required: true, message: 'Please enter your password' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                </Form>
             </div>
         </Modal>
     );

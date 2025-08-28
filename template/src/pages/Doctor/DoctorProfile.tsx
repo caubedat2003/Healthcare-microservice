@@ -5,6 +5,7 @@ import { FaKey } from "react-icons/fa6";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Loading from "../../components/Loading";
 
 const DoctorProfile = () => {
     const { user } = useAuth();
@@ -26,9 +27,7 @@ const DoctorProfile = () => {
         if (user?.id) fetchUserData();
     }, [user]);
 
-    if (!userData || !doctorData) return <div className="flex justify-center mt-10">
-        <Spin size="large" />
-    </div>;
+    if (!userData || !doctorData) return Loading();
 
     return (
         <main className="flex-grow pt-4">

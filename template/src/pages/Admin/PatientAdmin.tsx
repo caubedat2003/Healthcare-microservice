@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { Table, Button, Modal, message, Form, Input, Select, DatePicker } from 'antd';
 import { MdAdd } from 'react-icons/md';
-import { FaEye, FaTrash } from 'react-icons/fa';
+import { FaEye, FaSearch, FaTrash } from 'react-icons/fa';
 import { AiFillEdit } from 'react-icons/ai';
 
 type Patient = {
@@ -28,15 +28,22 @@ const PatientAdmin = () => {
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
     const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const searchTimeoutRef = useRef<number | null>(null);
     const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8080";
 
     useEffect(() => {
         fetchPatients();
     }, []);
 
-    const fetchPatients = async () => {
+    const fetchPatients = async (query?: string) => {
         try {
-            const response = await axios.get(`${BASE_URL}/api/patient/`);
+            let url = `${BASE_URL}/api/patient/`;
+            if (query && query.trim() !== '') {
+                // use the search endpoint when query provided
+                url = `${BASE_URL}/api/patient/search/?q=${encodeURIComponent(query.trim())}`;
+            }
+            const response = await axios.get(url);
             // sort by created_at newest first for display
             setPatients(response.data.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()));
         } catch (error) {
@@ -158,6 +165,26 @@ const PatientAdmin = () => {
         });
     };
 
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const v = e.target.value;
+        setSearchQuery(v);
+        if (searchTimeoutRef.current) {
+            window.clearTimeout(searchTimeoutRef.current);
+        }
+        // debounce user typing
+        searchTimeoutRef.current = window.setTimeout(() => {
+            fetchPatients(v);
+        }, 400);
+    };
+
+    const handleSearch = (value: string) => {
+        setSearchQuery(value);
+        if (searchTimeoutRef.current) {
+            window.clearTimeout(searchTimeoutRef.current);
+        }
+        fetchPatients(value);
+    };
+
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id', width: 80 },
         { title: 'User ID', dataIndex: 'user_id', key: 'user_id', width: 100 },
@@ -183,9 +210,24 @@ const PatientAdmin = () => {
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-4">Patient Management</h1>
-            <Button color="cyan" variant="solid" size='large' icon={<MdAdd />} onClick={showCreateModal} className="mb-4">
-                Add Patient
-            </Button>
+            <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <Button color="cyan" variant="solid" size='large' icon={<MdAdd />} onClick={showCreateModal}>
+                        Add Patient
+                    </Button>
+                </div>
+                <div style={{ minWidth: 240, width: '100%', maxWidth: 420 }}>
+                    <Input.Search
+                        placeholder="Search by name or phone"
+                        allowClear
+                        enterButton={<Button icon={<FaSearch />} style={{ backgroundColor: '#13c2c2', color: 'white', borderColor: '#13c2c2' }} >Search</Button>}
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        onSearch={handleSearch}
+                        className='text-[var(--color-primary)]'
+                    />
+                </div>
+            </div>
             <Table columns={columns} dataSource={patients} rowKey="id" />
 
             <Modal

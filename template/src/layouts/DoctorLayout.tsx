@@ -34,10 +34,10 @@ const DoctorLayout = () => {
             onClick: () => navigate("/doctor/appointments"),
         },
         {
-            key: "medical-records",
+            key: "patient-list",
             icon: <GrDocumentText size={20} />,
-            label: "Medical Records",
-            onClick: () => navigate("/doctor/medical-records"),
+            label: "Patient List",
+            onClick: () => navigate("/doctor/patient-list"),
         },
         {
             key: "profile",

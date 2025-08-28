@@ -18,8 +18,9 @@ import Chatbot from './pages/Chatbot'
 import UserProfile from './pages/UserProfile'
 import DoctorLayout from './layouts/DoctorLayout'
 import AppointmentDoctor from './pages/Doctor/AppointmentDoctor'
-import MedicalRecord from './pages/Doctor/MedicalRecord'
+import PatientList from './pages/Doctor/PatientList'
 import DoctorProfile from './pages/Doctor/DoctorProfile'
+import MedicalRecord from './pages/Doctor/MedicalRecord'
 
 function App() {
 
@@ -40,7 +41,8 @@ function App() {
         <Route path='doctor' element={<DoctorLayout />}>
           <Route index element={<AppointmentDoctor />} />
           <Route path="appointments" element={<AppointmentDoctor />} />
-          <Route path="medical-records" element={<MedicalRecord />} />
+          <Route path="patient-list" element={<PatientList />} />
+          <Route path="medical-records/:patientId" element={<MedicalRecord />} />
           <Route path="profile" element={<DoctorProfile />} />
         </Route>
 

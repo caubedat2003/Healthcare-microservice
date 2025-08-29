@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Table, Button, message, Card, Input } from 'antd';
 import Loading from '../../components/Loading';
 import { FaSearch } from 'react-icons/fa';
 import { MdAdd } from 'react-icons/md';
+import AddRecordModal from '../../components/AddRecordModal';
 
 type MedicalRecord = {
     id: number;
@@ -39,6 +40,9 @@ const MedicalRecord = () => {
     const [patient, setPatient] = useState<Patient>();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const searchTimeoutRef = useRef<number | null>(null);
+    const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:8080';
 
     useEffect(() => {
@@ -77,6 +81,29 @@ const MedicalRecord = () => {
             setLoading(false);
         }
     };
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const v = e.target.value;
+        setSearchQuery(v);
+        if (searchTimeoutRef.current) {
+            window.clearTimeout(searchTimeoutRef.current);
+        }
+        // debounce user typing
+        searchTimeoutRef.current = window.setTimeout(() => {
+            fetchPatient(v);
+        }, 400);
+    };
+
+    const handleSearch = (value: string) => {
+        setSearchQuery(value);
+        if (searchTimeoutRef.current) {
+            window.clearTimeout(searchTimeoutRef.current);
+        }
+        fetchPatient(value);
+    };
+
+    const openCreateModal = () => setIsCreateModalVisible(true);
+    const closeCreateModal = () => setIsCreateModalVisible(false);
 
     if (loading) {
         return Loading();
@@ -133,10 +160,10 @@ const MedicalRecord = () => {
                     </div>
                 </div>
             </Card>
-            <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div>
-                    <Button color="cyan" variant="solid" size='large' icon={<MdAdd />} onClick={showCreateModal}>
-                        Add Patient
+            <div className="mt-4 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div className=''>
+                    <Button color="cyan" variant="solid" size='large' icon={<MdAdd />} onClick={openCreateModal}>
+                        Create record
                     </Button>
                 </div>
                 <div style={{ minWidth: 240, width: '100%', maxWidth: 420 }}>
@@ -151,6 +178,15 @@ const MedicalRecord = () => {
                     />
                 </div>
             </div>
+            <AddRecordModal
+                visible={isCreateModalVisible}
+                onClose={closeCreateModal}
+                patient={patient}
+                onCreated={() => {
+                    closeCreateModal();
+                    if (patient?.id) fetchRecords(String(patient.id));
+                }}
+            />
             <Table columns={columns} dataSource={records} rowKey='id' loading={loading} />
         </div>
     );

@@ -4,8 +4,8 @@ import axios from 'axios';
 import { Table, Button, message, Card, Input } from 'antd';
 import Loading from '../../components/Loading';
 import { FaSearch } from 'react-icons/fa';
-import { MdAdd } from 'react-icons/md';
 import AddRecordModal from '../../components/AddRecordModal';
+import { RiStickyNoteAddLine } from 'react-icons/ri';
 
 type MedicalRecord = {
     id: number;
@@ -162,7 +162,7 @@ const MedicalRecord = () => {
             </Card>
             <div className="mt-4 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div className=''>
-                    <Button color="cyan" variant="solid" size='large' icon={<MdAdd />} onClick={openCreateModal}>
+                    <Button color="cyan" variant="solid" icon={<RiStickyNoteAddLine />} onClick={openCreateModal}>
                         Create record
                     </Button>
                 </div>

@@ -159,14 +159,14 @@ const AddRecordModal: React.FC<Props> = ({ visible, onClose, patient, onCreated 
                 <div className='flex gap-2'>
                     {editingKey === record.key ? (
                         <>
-                            <Button type='link' onClick={() => saveRow(record.key)}>Save</Button>
-                            <Button type='link' onClick={cancelEditRow}>Cancel</Button>
+                            <Button type='link' variant='text' color='cyan' onClick={() => saveRow(record.key)}>Save</Button>
+                            <Button type='link' variant='text' color='default' onClick={cancelEditRow}>Cancel</Button>
                         </>
                     ) : (
                         <>
-                            <Button type='link' onClick={() => editRow(record)}>Edit</Button>
+                            <Button type='link' variant='text' color='cyan' onClick={() => editRow(record)}>Edit</Button>
                             <Popconfirm title='Remove row?' onConfirm={() => removePrescriptionRow(record.key)}>
-                                <Button type='link' danger>Remove</Button>
+                                <Button variant='text' color='danger' type='link' danger>Remove</Button>
                             </Popconfirm>
                         </>
                     )}
@@ -183,6 +183,14 @@ const AddRecordModal: React.FC<Props> = ({ visible, onClose, patient, onCreated 
             onOk={handleCreateRecord}
             width={900}
             confirmLoading={loading}
+            footer={[
+                <Button key="back" color='cyan' variant='outlined' onClick={onClose} >
+                    Cancel
+                </Button>,
+                <Button key="submit" color='cyan' variant='solid' className='!font-bold' loading={loading} onClick={() => handleCreateRecord()}>
+                    Save
+                </Button>
+            ]}
         >
             <Form form={form} layout='vertical'>
                 <div className='grid grid-cols-2 gap-4'>
@@ -211,7 +219,7 @@ const AddRecordModal: React.FC<Props> = ({ visible, onClose, patient, onCreated 
                 <div className='mb-2 flex items-center justify-between'>
                     <h3 className='text-lg font-medium'>Prescription</h3>
                     <Space>
-                        <Button onClick={addPrescriptionRow}>Add row</Button>
+                        <Button color='cyan' variant='solid' onClick={addPrescriptionRow}>Add row</Button>
                     </Space>
                 </div>
 
